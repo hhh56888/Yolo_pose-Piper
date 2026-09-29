@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>piper_human_retargeting</name>
+  <version>0.1.0</version>
+
+  <description>
+    人体手臂姿态 -> Piper 机械臂关节映射层（阶段四）。
+
+    数据流：YOLO Pose + 手部识别 -> 手臂几何 -> 标定与重定向 -> J2/J3/J5。
+    本包只做数学与映射，不依赖 ROS2；感知由 piper_human_perception 提供，
+    关节下发与安全由 piper_human_control 提供。
+    第一版只控制 J2/J3/J5，J1/J4/J6 保持安全初值。
+
+    不修改 AgileX 官方 piper_ros 的任何文件。
+  </description>
+
+  <maintainer email="zxmy@example.com">zxmy</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- 依赖阶段二（关节控制 + 限位配置）与阶段三（感知） -->
+  <exec_depend>piper_human_control</exec_depend>
+  <exec_depend>piper_human_perception</exec_depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

@@ -1,0 +1,54 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+ROS2 可执行入口包装器
+=====================
+本文件由 setup.py 通过 data_files 安装到
+    <prefix>/lib/piper_human_control/<命令名>
+以保证 `ros2 run piper_human_control <命令名>` 可用。
+
+为什么要这个包装器：
+    `ros2 run` 与 `ros2 pkg executables` 只在 <prefix>/lib/<pkg>/ 下
+    查找可执行文件；而 ament_python 经 setuptools easy_install 生成的
+    entry_points 脚本在本环境下会落到 <prefix>/bin/，导致找不到。
+    用 data_files 直接投放到目标目录最可控。
+
+用法（由符号链接名决定调用哪个入口）：
+    launcher.py                 -> 按自身文件名分发
+    launcher.py joint_test      -> 显式指定入口名
+"""
+
+import os
+import sys
+
+# 命令名 -> (模块, 函数)
+ENTRIES = {
+    "joint_test": ("piper_human_control.joint_test_node", "main"),
+    "joint_teleop": ("piper_human_control.joint_teleop_node", "main"),
+}
+
+
+def main() -> int:
+    # 优先用显式参数，否则用被调用时的文件名（软链接名）
+    if len(sys.argv) > 1 and sys.argv[1] in ENTRIES:
+        name = sys.argv.pop(1)
+    else:
+        name = os.path.basename(sys.argv[0])
+
+    if name not in ENTRIES:
+        sys.stderr.write(
+            f"未知入口 '{name}'。可用: {', '.join(sorted(ENTRIES))}\n")
+        return 2
+
+    module_name, func_name = ENTRIES[name]
+
+    import importlib
+    module = importlib.import_module(module_name)
+    func = getattr(module, func_name)
+
+    result = func()
+    return int(result) if isinstance(result, int) else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

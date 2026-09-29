@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>piper_human_control</name>
+  <version>0.1.0</version>
+
+  <description>
+    Piper 机械臂独立关节控制接口（阶段二）。
+    本包不修改 AgileX 官方 piper_ros 的任何文件，
+    仅通过标准 ROS2 话题向仿真/真机下发关节目标。
+  </description>
+
+  <maintainer email="zxmy@example.com">zxmy</maintainer>
+  <license>Apache-2.0</license>
+
+  <!-- 构建工具 -->
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- 运行依赖：ROS2 基础 -->
+  <exec_depend>rclpy</exec_depend>
+
+  <!-- 运行依赖：消息类型 -->
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>trajectory_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>builtin_interfaces</exec_depend>
+
+  <!-- 运行依赖：Piper 仿真侧控制器（由 piper_gazebo launch 启动） -->
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>joint_state_broadcaster</exec_depend>
+  <exec_depend>joint_trajectory_controller</exec_depend>
+
+  <!-- 测试依赖 -->
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

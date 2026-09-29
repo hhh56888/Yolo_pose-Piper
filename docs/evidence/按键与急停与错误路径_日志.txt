@@ -1,0 +1,27 @@
+===== 急停测试关键日志 =====
+  按键: c标定 r重标 n回位 k切换测试阶段 g切换夹爪 e急停 q退出
+[ERROR] [1790238966.726626704] [piper_teleop]: ** 软件急停触发: 手动触发 **
+[WARN] [1790238976.727977320] [piper_teleop]: 急停已解除（机械臂不会自动恢复运动）
+
+===== 交互按键测试关键日志 =====
+  按键: c标定 r重标 n回位 k切换测试阶段 g切换夹爪 e急停 q退出
+  [标定完成] 人体中立值: {'upper_arm_angle_deg': -90.0, 'elbow_angle_deg': 123.4, 'forearm_angle_deg': 33.4}
+  [按键c] 开始重新标定
+  [标定完成] 人体中立值: {'upper_arm_angle_deg': -99.8, 'elbow_angle_deg': 134.6, 'forearm_angle_deg': 35.5}
+  [按键n] 回初始位姿 -> [0.0, 0.616, -0.61, 0.0, -0.016, 0.0]
+  [按键g] 夹爪模式 -> fixed
+  [按键g] 夹爪模式 -> hand
+  [按键r] 开始重新标定
+  [标定完成] 人体中立值: {'upper_arm_angle_deg': -101.2, 'elbow_angle_deg': 153.5, 'forearm_angle_deg': 51.8}
+
+===== 错误路径测试 =====
+--- 摄像头索引不存在 ---
+  [FAIL] 无法打开帧源: OpenCV 摄像头 index=99
+--- 视频文件不存在 ---
+  [FAIL] 无法打开帧源: 视频文件 testdata/nope.mp4
+--- 姿态模型不存在 ---
+  [FAIL] 姿态模型文件不存在: models/nope.pt
+--- 图片文件不存在 ---
+  [FAIL] 无法打开帧源: 图片文件 /tmp/nope.jpg
+--- 落盘的坏配置 ---
+  [FAIL] 配置加载失败: 配置错误: neutral_joints 长度 0 != 6

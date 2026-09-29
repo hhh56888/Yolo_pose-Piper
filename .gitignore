@@ -1,0 +1,49 @@
+# ============================================================
+# 白名单式忽略：根目录下**只放行本项目**的内容
+# ============================================================
+# 原因：这个工作区里还有 100+ GB 的无关工程与数据
+# （src/piper_ros、src/piper_sdk、src/project1|2|4、project4.zip 13.8 GB），
+# 常规 .gitignore 很容易误提交。这里先忽略根下一切，再逐项放行。
+# ============================================================
+/*
+!/.gitignore
+!/README.md
+!/PROJECT_STRUCTURE.md
+!/fix_upstream_bugs.sh
+!/docs/
+!/models/
+!/testdata/
+!/src/
+
+# src 下只放行本项目的三个包（官方 piper_ros / piper_sdk / project* 不提交）
+/src/*
+!/src/piper_human_control/
+!/src/piper_human_perception/
+!/src/piper_human_retargeting/
+
+# ------------------------------------------------------------
+# 通用垃圾（在各包内部继续生效）
+# ------------------------------------------------------------
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.DS_Store
+._*
+*.swp
+.idea/
+.vscode/
+
+# 构建产物 / 运行日志（可重建）
+build/
+install/
+log/
+*.log
+
+# 大文件默认不提交
+*.zip
+
+# 例外：实测证据要保留（报告里按这些路径引用）
+!docs/evidence/**

@@ -1,0 +1,195 @@
+{
+ "source": {
+  "urdf_md5": "79c1b6e3cd92d4b571945c831c51c031",
+  "urdf_bytes": 11910,
+  "root_link": "base_link",
+  "tip_link": "gripper_base",
+  "generator": "tools/build_fk_chain.py"
+ },
+ "chain": [
+  {
+   "name": "joint1",
+   "type": "revolute",
+   "parent": "base_link",
+   "child": "link1",
+   "origin_xyz": [
+    0.0,
+    0.0,
+    0.123
+   ],
+   "origin_rpy": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limit": {
+    "lower": -2.618,
+    "upper": 2.618,
+    "effort": 100.0,
+    "velocity": 5.0
+   }
+  },
+  {
+   "name": "joint2",
+   "type": "revolute",
+   "parent": "link1",
+   "child": "link2",
+   "origin_xyz": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "origin_rpy": [
+    1.5708,
+    -0.1359,
+    -3.1416
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limit": {
+    "lower": 0.0,
+    "upper": 3.14,
+    "effort": 100.0,
+    "velocity": 5.0
+   }
+  },
+  {
+   "name": "joint3",
+   "type": "revolute",
+   "parent": "link2",
+   "child": "link3",
+   "origin_xyz": [
+    0.28503,
+    0.0,
+    0.0
+   ],
+   "origin_rpy": [
+    0.0,
+    0.0,
+    -1.7939
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limit": {
+    "lower": -2.967,
+    "upper": 0.0,
+    "effort": 100.0,
+    "velocity": 5.0
+   }
+  },
+  {
+   "name": "joint4",
+   "type": "revolute",
+   "parent": "link3",
+   "child": "link4",
+   "origin_xyz": [
+    -0.021984,
+    -0.25075,
+    0.0
+   ],
+   "origin_rpy": [
+    1.5708,
+    0.0,
+    0.0
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limit": {
+    "lower": -1.745,
+    "upper": 1.745,
+    "effort": 100.0,
+    "velocity": 5.0
+   }
+  },
+  {
+   "name": "joint5",
+   "type": "revolute",
+   "parent": "link4",
+   "child": "link5",
+   "origin_xyz": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "origin_rpy": [
+    -1.5708,
+    0.0,
+    0.0
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limit": {
+    "lower": -1.22,
+    "upper": 1.22,
+    "effort": 100.0,
+    "velocity": 5.0
+   }
+  },
+  {
+   "name": "joint6",
+   "type": "revolute",
+   "parent": "link5",
+   "child": "link6",
+   "origin_xyz": [
+    8.8259e-05,
+    -0.091,
+    0.0
+   ],
+   "origin_rpy": [
+    1.5708,
+    0.0,
+    0.0
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    1.0
+   ],
+   "limit": {
+    "lower": -2.0944,
+    "upper": 2.0944,
+    "effort": 100.0,
+    "velocity": 3.0
+   }
+  },
+  {
+   "name": "joint6_to_gripper_base",
+   "type": "fixed",
+   "parent": "link6",
+   "child": "gripper_base",
+   "origin_xyz": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "origin_rpy": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "axis": [
+    0.0,
+    0.0,
+    0.0
+   ],
+   "limit": null
+  }
+ ]
+}

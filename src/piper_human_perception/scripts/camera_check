@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+ROS2 可执行入口包装器（piper_human_perception）
+==============================================
+由 setup.py 通过 data_files 安装到
+    <prefix>/lib/piper_human_perception/<命令名>
+以保证 `ros2 run piper_human_perception <命令名>` 可用。
+
+背景见 piper_human_control/setup.py 中的详细说明。
+本包装器按「自身文件名」分发到对应入口，
+因此 scripts/ 下每个命令一个同名文件（内容相同）。
+"""
+
+import os
+import sys
+
+# 命令名 -> (模块, 函数)
+ENTRIES = {
+    "pose_demo": ("piper_human_perception.pose_demo", "main"),
+    "camera_check": ("piper_human_perception.camera_check", "main"),
+}
+
+
+def main() -> int:
+    # 优先用显式参数，否则用被调用时的文件名（软链接名）
+    if len(sys.argv) > 1 and sys.argv[1] in ENTRIES:
+        name = sys.argv.pop(1)
+    else:
+        name = os.path.basename(sys.argv[0])
+
+    if name not in ENTRIES:
+        sys.stderr.write(
+            f"未知入口 '{name}'。可用: {', '.join(sorted(ENTRIES))}\n")
+        return 2
+
+    module_name, func_name = ENTRIES[name]
+
+    import importlib
+    module = importlib.import_module(module_name)
+    func = getattr(module, func_name)
+
+    result = func()
+    return int(result) if isinstance(result, int) else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

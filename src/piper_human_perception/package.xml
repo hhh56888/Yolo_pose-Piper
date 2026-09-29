@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>piper_human_perception</name>
+  <version>0.1.0</version>
+
+  <description>
+    人体手臂姿态感知层（阶段三）。
+    RGB 摄像头 -> YOLO Pose -> 肩/肘/腕关键点 -> 实时可视化。
+
+    本包不依赖 ROS2，也不修改 AgileX 官方 piper_ros 的任何文件。
+    数据结构复用 piper_human_control 的 Keypoint / ArmKeypoints，
+    以保证全项目数据模型统一，并为阶段七 RGB-D 预留接口。
+  </description>
+
+  <maintainer email="zxmy@example.com">zxmy</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- 复用阶段二的数据结构（Keypoint / ArmKeypoints） -->
+  <exec_depend>piper_human_control</exec_depend>
+
+  <!-- 第三方 Python 依赖（非 ROS 包，pip 提供）：
+       opencv-python, ultralytics, numpy, torch
+       ROS 的 rosdep 无法表达这些，故写在下方的 doc 标签中说明，
+       实际安装见 README。 -->
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

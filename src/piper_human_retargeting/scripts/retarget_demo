@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+ROS2 可执行入口包装器（piper_human_retargeting）
+按自身文件名分发到对应入口。
+背景见 piper_human_control/setup.py 的详细说明。
+"""
+import os
+import sys
+
+ENTRIES = {
+    "retarget_demo": ("piper_human_retargeting.retarget_demo", "main"),
+}
+
+
+def main() -> int:
+    if len(sys.argv) > 1 and sys.argv[1] in ENTRIES:
+        name = sys.argv.pop(1)
+    else:
+        name = os.path.basename(sys.argv[0])
+
+    if name not in ENTRIES:
+        sys.stderr.write(f"未知入口 '{name}'。可用: {', '.join(sorted(ENTRIES))}\n")
+        return 2
+
+    module_name, func_name = ENTRIES[name]
+    import importlib
+    module = importlib.import_module(module_name)
+    func = getattr(module, func_name)
+    result = func()
+    return int(result) if isinstance(result, int) else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

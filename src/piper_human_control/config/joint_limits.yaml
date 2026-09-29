@@ -1,0 +1,90 @@
+# ============================================================
+# piper_human_control · 关节控制配置
+# ============================================================
+# 本文件是阶段二的控制参数唯一来源（不做任何硬编码）。
+#
+# 限位来源：官方 piper_sdk/piper_param/piper_param_manager.py
+#   ⚠️ 不要使用 piper_description_gazebo.xacro 里 command_interface 的
+#      <param name="min">-1</param> <param name="max">1</param>，
+#      那组数字是为 velocity 接口准备的，与真实位置限位不符。
+# ============================================================
+
+# ---------- 关节定义 ----------
+joints:
+  # 顺序必须与 arm_controller 的 joints 顺序一致
+  names: ["joint1", "joint2", "joint3", "joint4", "joint5", "joint6"]
+
+  # 真实位置限位 (rad)
+  limits:
+    joint1: {lower: -2.6179, upper:  2.6179}   # ±150°
+    joint2: {lower:  0.0,    upper:  3.14  }   # 0 ~ 180°   ← 下限为 0
+    joint3: {lower: -2.967,  upper:  0.0   }   # -170° ~ 0  ← 上限为 0
+    joint4: {lower: -1.745,  upper:  1.745 }   # ±100°
+    joint5: {lower: -1.22,   upper:  1.22  }   # ±70°
+    joint6: {lower: -2.09439, upper: 2.09439}  # ±120°
+
+  # 控制用速度上限 (rad/s)
+  # 真机 URDF 标称 5 rad/s，此处取保守值以保证安全与平滑。
+  velocity_limits:
+    joint1: 1.0
+    joint2: 1.0
+    joint3: 1.0
+    joint4: 1.2
+    joint5: 1.5
+    joint6: 1.5
+
+  # 控制用加速度上限 (rad/s^2)，用于速率限制，避免阶跃冲击
+  acceleration_limits:
+    joint1: 2.0
+    joint2: 2.0
+    joint3: 2.0
+    joint4: 2.5
+    joint5: 3.0
+    joint6: 3.0
+
+# ---------- 安全初始位姿 ----------
+# 选择依据：
+#   * joint2 必须 >= 0，joint3 必须 <= 0，因此取 j2=+0.6 / j3=-0.6
+#   * 全部远离限位边界，且不在奇异位形附近
+home: [0.0, 0.6, -0.6, 0.0, 0.0, 0.0]
+
+# ---------- 底层控制接口 ----------
+controller:
+  # arm_controller 的更新率（仿真中为 500 Hz），仅用于信息记录
+  update_rate_hz: 500.0
+
+  # 轨迹发布频率 (Hz)
+  publish_rate_hz: 20.0
+
+  # 单条轨迹的时间窗 (s)
+  # 实测：窗口越小跟踪越精确。0.1s 时稳态误差 < 1e-4 rad。
+  # 窗口过大（如 1.0s）会导致明显滞后。
+  trajectory_horizon_s: 0.1
+
+  # 轨迹话题
+  trajectory_topic: "/arm_controller/joint_trajectory"
+
+  # 状态话题
+  joint_state_topic: "/joint_states"
+
+  # 状态超时 (s)：超过此时长未收到 /joint_states 判定为「状态丢失」
+  state_timeout_s: 0.5
+
+# ---------- 安全策略 ----------
+safety:
+  # 目标位与当前位置差值超过该阈值时，按速率限制逐步逼近（不跳变）
+  max_initial_error_rad: 3.2
+
+  # 单个控制周期允许的最大关节增量 (rad)，防止任何情况下的跳变
+  max_step_per_cycle_rad: 0.15
+
+  # 连续多少次发布失败后进入安全保持
+  max_publish_failures: 10
+
+  # 状态丢失时：先保持最后位置；超过 hold_timeout 后进入安全保持（不自动回 HOME）
+  lost_tracking_hold_s: 1.0
+
+# ---------- 日志 ----------
+logging:
+  # 每 N 次发布打印一次调试信息（0 表示关闭）
+  debug_every_n_publishes: 0
