@@ -135,6 +135,19 @@ cd ~/Yolo_pose+piper && source /opt/ros/humble/setup.bash && \
 COPYFILE_DISABLE=1 tar czf /tmp/x.tgz <目录>
 ```
 
+**两侧一致性**：本仓库（Mac 上的工作区）与机械臂主机的 `~/Yolo_pose+piper`
+应保持**逐文件一致**（`build/install/log` 与官方 `piper_ros` 除外）。核对方式：
+
+```bash
+# 远端
+cd ~/Yolo_pose+piper && find src/piper_human_* docs models testdata -type f \
+  -not -path "*__pycache__*" -not -name "._*" | sort | xargs md5sum > /tmp/remote_manifest.txt
+# 本地（工作区根）
+find src/piper_human_* docs models testdata -type f -not -path "*__pycache__*" \
+  -not -name "._*" | sort | xargs md5sum > /tmp/local_manifest.txt
+diff <(awk '{print $1,$2}' /tmp/remote_manifest.txt) <(awk '{print $1,$2}' /tmp/local_manifest.txt)
+```
+
 **备份约定**：任何批量移动/删除前先
 
 ```bash

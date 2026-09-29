@@ -53,6 +53,13 @@ retarget_mode: "task_space"  # V1.1：人的手 → TCP → J2/J3 IK
 > 本仓库**不包含**官方 `piper_ros` / `piper_sdk`（第三方上游，按需单独克隆，
 > 本项目对其的唯一改动由 `fix_upstream_bugs.sh` 记录并可复现）。
 
+### 仓库内容来源
+
+本仓库内容 = 机械臂主机上的工程目录 `~/Yolo_pose+piper`（本项目实际运行的那一份），
+**逐文件核对一致**（比对方式：两侧 `md5sum` 全量清单 diff，代码/配置/脚本 0 处不同）。
+不含该目录下的 colcon 产物 `build/` `install/` `log/`（可重建）与官方 `piper_ros`。
+`docs/evidence/` 取两侧的并集（比远端多保留早期阶段的截图/CSV，报告里按此引用）。
+
 ---
 
 ## 快速开始
